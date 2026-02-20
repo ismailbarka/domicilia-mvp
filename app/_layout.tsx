@@ -27,5 +27,13 @@ export default function RootLayout() {
 
   if (!loaded && !error) return null;
 
-  return <Stack />;
+  return (
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="modal"
+        options={{ presentation: 'modal', headerShown: false }}
+      />
+    </Stack>
+  );
 }
