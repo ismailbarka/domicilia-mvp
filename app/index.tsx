@@ -33,7 +33,7 @@ export default function App() {
 
   useEffect(() => {
     updateLocation();
-  }, []);
+  }, [updateLocation]);
   if (region.latitude === 0.0) return null;
 
   return (

@@ -1,4 +1,3 @@
-// eslint.config.js
 import js from '@eslint/js';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -6,7 +5,14 @@ import tseslint from 'typescript-eslint';
 
 export default [
   {
-    ignores: ['node_modules/**', '.expo/**', 'dist/**', 'build/**']
+    ignores: [
+      'node_modules/**',
+      '.expo/**',
+      'dist/**',
+      'build/**',
+      'jest.config.js',
+      'jest.setup.js'
+    ]
   },
 
   js.configs.recommended,

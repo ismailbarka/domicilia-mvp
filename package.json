@@ -13,6 +13,7 @@
     "prettier:check": "prettier . --check",
     "prettier:fix": "prettier . --write",
     "ts-check": "tsc --noEmit true --project ./tsconfig.json",
+    "test": "jest",
     "pre-commit": "lint-staged",
     "postinstall": "husky"
   },
