@@ -31,8 +31,12 @@ export default function RootLayout() {
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen
-        name="modal"
+        name="modal/index"
         options={{ presentation: 'modal', headerShown: false }}
+      />
+      <Stack.Screen
+        name="card-modal/index"
+        options={{ presentation: 'transparentModal', headerShown: false }}
       />
     </Stack>
   );
