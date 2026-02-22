@@ -11,6 +11,9 @@ export default function useGetProviders(
   const [loading, setLoading] = useState<boolean>(true);
 
   const getNewProviders = async () => {
+    console.log(
+      'getting providers -------------------------------------------------------'
+    );
     if (!latitude || !longitude) {
       setLoading(false);
       return;
