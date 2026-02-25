@@ -1,11 +1,11 @@
 import * as Haptics from 'expo-haptics';
 import React from 'react';
 import {
-  Pressable,
   PressableProps,
   StyleProp,
   StyleSheet,
   Text,
+  TouchableOpacity,
   ViewStyle
 } from 'react-native';
 
@@ -23,11 +23,11 @@ export default function AppButton({ title, icon, onPress, style }: Props) {
   }
 
   return (
-    <Pressable style={[styles.button, style]} onPress={handlePress}>
+    <TouchableOpacity style={[styles.button, style]} onPress={handlePress}>
       {icon}
 
       {title ? <Text style={styles.text}>{title}</Text> : null}
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 

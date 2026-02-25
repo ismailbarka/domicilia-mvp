@@ -1,6 +1,6 @@
 import { Provider } from '@/core/types/provider-type';
 import { Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import CallButton from './provider-card-bottomsheet-components/call-button';
@@ -24,9 +24,11 @@ export default function ProviderCardBottomsheet({
     modalRef.current?.open();
   }, []);
 
-  const handleClose = () => {
-    setSelectedProvider(null);
-  };
+  const handleClose = useCallback(() => {
+    setTimeout(() => {
+      setSelectedProvider(null);
+    }, 500);
+  }, [setSelectedProvider]);
 
   return (
     <Modalize
@@ -39,14 +41,14 @@ export default function ProviderCardBottomsheet({
       closeOnOverlayTap
     >
       <View style={styles.sheet}>
-        <CloseButton onPress={handleClose} />
+        <CloseButton onPress={() => modalRef.current?.close()} />
         <ShareButton provider={provider} />
         <ProfilePhoto provider={provider} />
         <Text style={styles.name}>{provider.name}</Text>
         <InfoRow provider={provider} />
-        {provider.description ? (
+        {provider.description && (
           <Text style={styles.description}>{provider.description}</Text>
-        ) : null}
+        )}
         <View style={styles.actionRow}>
           <CallButton provider={provider} />
           <WhatsAppButton provider={provider} />

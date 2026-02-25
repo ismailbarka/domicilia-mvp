@@ -1,3 +1,5 @@
+import * as Haptics from 'expo-haptics';
+import { useCallback } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 export default function FiltersScrollView({
@@ -9,6 +11,14 @@ export default function FiltersScrollView({
   selectedCategory: string | null;
   setSelectedCategory: (category: string) => void;
 }) {
+  const handleClick = useCallback(
+    (category: string) => {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+      setSelectedCategory(category);
+    },
+    [setSelectedCategory]
+  );
+
   return (
     <ScrollView
       horizontal
@@ -23,7 +33,7 @@ export default function FiltersScrollView({
             styles.filterButton,
             selectedCategory === category && styles.filterButtonSelected
           ]}
-          onPress={() => setSelectedCategory(category)}
+          onPress={() => handleClick(category)}
         >
           <Text
             style={[

@@ -9,10 +9,8 @@ export default function useFilteredProviders(
     if (selectedCategory === 'All') return providers;
 
     const lowerCategory = selectedCategory.toLowerCase();
-    const filtredProviders = providers.filter(
+    return providers.filter(
       p => p.categoryName?.toLowerCase() === lowerCategory
     );
-    console.log('filtred providers : ', filtredProviders.length);
-    return filtredProviders;
   }, [providers, selectedCategory]);
 }

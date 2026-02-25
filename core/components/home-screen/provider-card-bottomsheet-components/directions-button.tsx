@@ -1,10 +1,11 @@
 import { Provider } from '@/core/types/provider-type';
 import AppButton from '@/core/ui/app-button';
 import { Ionicons } from '@expo/vector-icons';
+import { useCallback } from 'react';
 import { Alert, Linking, StyleSheet } from 'react-native';
 
 export default function DirectionsButton({ provider }: { provider: Provider }) {
-  const handleDirections = async () => {
+  const handleDirections = useCallback(async () => {
     const lat = provider.latitude;
     const lng = provider.longitude;
 
@@ -35,7 +36,7 @@ export default function DirectionsButton({ provider }: { provider: Provider }) {
       ],
       { cancelable: true }
     );
-  };
+  }, [provider.latitude, provider.longitude]);
 
   return (
     <AppButton

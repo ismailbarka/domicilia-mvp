@@ -1,4 +1,5 @@
 import FiltersScrollView from '@/core/components/home-screen/filters-scroll-view';
+import ListCardBottomsheet from '@/core/components/home-screen/list-card-bottomsheet';
 import LocateMe from '@/core/components/home-screen/locate-me';
 import ProviderCardBottomsheet from '@/core/components/home-screen/provider-card-bottomsheet';
 import ProvidersMarker from '@/core/components/providers-marker';
@@ -7,6 +8,8 @@ import useGetProviders from '@/core/hooks/get-providers-hook';
 import useCurrentLocation from '@/core/hooks/use-current-location';
 import useFilteredProviders from '@/core/hooks/use-filtered-providers';
 import { Provider } from '@/core/types/provider-type';
+import AppButton from '@/core/ui/app-button';
+import { Ionicons } from '@expo/vector-icons';
 import React, { useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -14,6 +17,7 @@ import MapView from 'react-native-maps';
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [listView, setListView] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
     null
   );
@@ -28,6 +32,10 @@ export default function App() {
     '5000'
   );
   const filteredProviders = useFilteredProviders(providers, selectedCategory);
+  const visibleProviderIds = useMemo(
+    () => new Set(filteredProviders.map(p => p.id)),
+    [filteredProviders]
+  );
 
   const { categories } = useGetCategories();
 
@@ -37,32 +45,32 @@ export default function App() {
 
   return (
     <View className="flex-1">
-      <MapView
-        ref={mapRef}
-        style={styles.map}
-        region={region}
-        showsUserLocation
-        provider="google"
-      >
-        {providers?.map(provider => {
-          const isVisible =
-            filteredProviders?.some(p => p.id === provider.id) ?? false;
-          return (
-            <ProvidersMarker
-              key={provider.id.toString()}
-              provider={provider}
-              setSelectedProvider={setSelectedProvider}
-              isVisible={isVisible}
-            />
-          );
-        })}
-      </MapView>
+      <View style={styles.map}>
+        <MapView
+          ref={mapRef}
+          style={styles.map}
+          region={region}
+          showsUserLocation
+          provider="google"
+        >
+          {providers?.map(provider => {
+            return (
+              <ProvidersMarker
+                key={provider.id.toString()}
+                provider={provider}
+                setSelectedProvider={setSelectedProvider}
+                isVisible={visibleProviderIds.has(provider.id)}
+              />
+            );
+          })}
+        </MapView>
 
-      <FiltersScrollView
-        filterCategories={filterCategories}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      />
+        <FiltersScrollView
+          filterCategories={filterCategories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+      </View>
       {selectedProvider && (
         <ProviderCardBottomsheet
           provider={selectedProvider}
@@ -70,6 +78,22 @@ export default function App() {
         />
       )}
       <LocateMe region={region} mapRef={mapRef} />
+      <AppButton
+        style={styles.button}
+        onPress={() => setListView(true)}
+        icon={<Ionicons name="list" size={24} color="#007AFF" />}
+      />
+      {listView && (
+        <ListCardBottomsheet
+          onPress={setListView}
+          providers={filteredProviders}
+          category={selectedCategory}
+          onProviderPress={provider => {
+            setSelectedProvider(provider);
+            setListView(false);
+          }}
+        />
+      )}
     </View>
   );
 }
@@ -77,5 +101,17 @@ export default function App() {
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject
+  },
+  button: {
+    position: 'absolute',
+    bottom: 40,
+    left: 20, // bottom-left corner
+    width: 50, // same width as LocateMe
+    height: 50, // same height as LocateMe
+    borderRadius: 25, // circular like LocateMe
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5
   }
 });

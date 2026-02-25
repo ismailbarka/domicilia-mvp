@@ -1,13 +1,14 @@
 import { Provider } from '@/core/types/provider-type';
 import AppButton from '@/core/ui/app-button';
 import { Ionicons } from '@expo/vector-icons';
+import { useCallback } from 'react';
 import { Linking, StyleSheet } from 'react-native';
 
 export default function WhatsAppButton({ provider }: { provider: Provider }) {
-  const handleWhatsApp = async () => {
+  const handleWhatsApp = useCallback(async () => {
     const cleanPhone = provider.phone.replace(/\s+/g, '').replace('+', '');
     Linking.openURL(`https://wa.me/${cleanPhone}`);
-  };
+  }, [provider.phone]);
 
   return (
     <AppButton
