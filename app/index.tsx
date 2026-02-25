@@ -1,28 +1,32 @@
-import FiltersScrollView from '@/components/home-screen/filters-scroll-view';
-import LocateMe from '@/components/locate-me';
-import ProvidersMarker from '@/components/providers-marker';
-import useGetCategories from '@/hooks/get-categories-hook';
-import useGetProviders from '@/hooks/get-providers-hook';
-import useCurrentLocation from '@/hooks/home-screen/use-current-location';
-import useFilteredProviders from '@/hooks/home-screen/use-filtered-providers';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import FiltersScrollView from '@/core/components/home-screen/filters-scroll-view';
+import ProviderCardBottomsheet from '@/core/components/home-screen/provider-card-bottomsheet';
+import LocateMe from '@/core/components/home-screen/locate-me';
+import ProvidersMarker from '@/core/components/providers-marker';
+import useGetCategories from '@/core/hooks/get-categories-hook';
+import useGetProviders from '@/core/hooks/get-providers-hook';
+import useCurrentLocation from '@/core/hooks/use-current-location';
+import useFilteredProviders from '@/core/hooks/use-filtered-providers';
+import { Provider } from '@/core/types/provider-type';
+import React, { useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import MapView from 'react-native-maps';
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
+    null
+  );
 
   const mapRef = useRef<MapView | null>(null);
 
-  const { region, updateLocation } = useCurrentLocation(mapRef);
+  const { region } = useCurrentLocation();
 
   const { providers } = useGetProviders(
-    region.latitude.toString(),
-    region.longitude.toString(),
+    region?.latitude.toString(),
+    region?.longitude.toString(),
     '5000'
   );
-
   const filteredProviders = useFilteredProviders(providers, selectedCategory);
 
   const { categories } = useGetCategories();
@@ -31,55 +35,42 @@ export default function App() {
     return ['All', ...categories.map(c => c.name)];
   }, [categories]);
 
-  useEffect(() => {
-    updateLocation();
-  }, [updateLocation]);
-  if (region.latitude === 0.0) return null;
-
   return (
-    <View style={styles.container}>
-      <FiltersScrollView
-        filterCategories={filterCategories}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      />
+    <View className="flex-1">
       <MapView
         ref={mapRef}
         style={styles.map}
         region={region}
         showsUserLocation
+        provider="google"
       >
         {filteredProviders?.map(provider => (
           <ProvidersMarker
             key={provider.id.toString()}
             provider={provider}
-          ></ProvidersMarker>
+            setSelectedProvider={setSelectedProvider}
+          />
         ))}
       </MapView>
-      <LocateMe updateLocation={updateLocation} />
+
+      <FiltersScrollView
+        filterCategories={filterCategories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
+      {selectedProvider && (
+        <ProviderCardBottomsheet
+          provider={selectedProvider}
+          setSelectedProvider={setSelectedProvider}
+        />
+      )}
+      <LocateMe region={region} mapRef={mapRef} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   map: {
     ...StyleSheet.absoluteFillObject
-  },
-  button: {
-    position: 'absolute',
-    bottom: 40,
-    right: 20,
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 5
   }
 });

@@ -11,14 +11,17 @@ export default [
       'dist/**',
       'build/**',
       'jest.config.js',
-      'jest.setup.js'
+      'jest.setup.js',
+      '**/*.test.ts',
+      '**/*.test.tsx',
+      '**/*.test.js',
+      '**/*.test.jsx'
     ]
   },
 
   js.configs.recommended,
   ...tseslint.configs.recommended,
 
-  // ✅ React Native / App files
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     ignores: [

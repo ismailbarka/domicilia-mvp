@@ -1,6 +1,6 @@
-import ProviderItem from '@/components/ProviderItem';
-import useGetProviders from '@/hooks/get-providers-hook';
-import { Provider } from '@/types';
+import ProviderItem from '@/core/components/ProviderItem';
+import useGetProviders from '@/core/hooks/get-providers-hook';
+import { Provider } from '@/core/types/provider-type';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useLocalSearchParams, useRouter } from 'expo-router';

@@ -6,8 +6,10 @@ import {
 } from '@expo-google-fonts/jost';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import 'react-native-gesture-handler';
 
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 
 SplashScreen.preventAutoHideAsync();
@@ -19,25 +21,27 @@ export default function RootLayout() {
     'Jost-Bold': Jost_700Bold
   });
 
-  useEffect(() => {
+  const loadApp = useCallback(async () => {
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
 
+  useEffect(() => {
+    loadApp();
+  }, [loadApp]);
+
   if (!loaded && !error) return null;
 
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="modal/index"
-        options={{ presentation: 'modal', headerShown: false }}
-      />
-      <Stack.Screen
-        name="card-modal/index"
-        options={{ presentation: 'transparentModal', headerShown: false }}
-      />
-    </Stack>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="modal/index"
+          options={{ presentation: 'modal', headerShown: false }}
+        />
+      </Stack>
+    </GestureHandlerRootView>
   );
 }
