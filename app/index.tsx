@@ -1,6 +1,6 @@
 import FiltersScrollView from '@/core/components/home-screen/filters-scroll-view';
-import ProviderCardBottomsheet from '@/core/components/home-screen/provider-card-bottomsheet';
 import LocateMe from '@/core/components/home-screen/locate-me';
+import ProviderCardBottomsheet from '@/core/components/home-screen/provider-card-bottomsheet';
 import ProvidersMarker from '@/core/components/providers-marker';
 import useGetCategories from '@/core/hooks/get-categories-hook';
 import useGetProviders from '@/core/hooks/get-providers-hook';
@@ -44,13 +44,18 @@ export default function App() {
         showsUserLocation
         provider="google"
       >
-        {filteredProviders?.map(provider => (
-          <ProvidersMarker
-            key={provider.id.toString()}
-            provider={provider}
-            setSelectedProvider={setSelectedProvider}
-          />
-        ))}
+        {providers?.map(provider => {
+          const isVisible =
+            filteredProviders?.some(p => p.id === provider.id) ?? false;
+          return (
+            <ProvidersMarker
+              key={provider.id.toString()}
+              provider={provider}
+              setSelectedProvider={setSelectedProvider}
+              isVisible={isVisible}
+            />
+          );
+        })}
       </MapView>
 
       <FiltersScrollView

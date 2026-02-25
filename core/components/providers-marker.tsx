@@ -1,18 +1,31 @@
 import { Provider } from '@/core/types/provider-type';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Marker } from 'react-native-maps';
 import ProviderMarkerUI from './ProviderMarker';
 
 export default function ProvidersMarker({
   provider,
-  setSelectedProvider
+  setSelectedProvider,
+  isVisible = true
 }: {
   provider: Provider;
   setSelectedProvider: (provider: Provider | null) => void;
+  isVisible?: boolean;
 }) {
+  const [tracksViewChanges, setTracksViewChanges] = useState(true);
+
+  useEffect(() => {
+    setTracksViewChanges(true);
+    const timeout = setTimeout(() => {
+      setTracksViewChanges(false);
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [isVisible]);
+
   const handlePress = useCallback(() => {
+    if (!isVisible) return;
     setSelectedProvider(provider);
-  }, [provider, setSelectedProvider]);
+  }, [provider, setSelectedProvider, isVisible]);
 
   const coordinate = useMemo(() => {
     return {
@@ -24,9 +37,10 @@ export default function ProvidersMarker({
   return (
     <Marker
       coordinate={coordinate}
-      tracksViewChanges={false}
+      tracksViewChanges={tracksViewChanges}
       onPress={handlePress}
       title={provider.name}
+      opacity={isVisible ? 1 : 0}
     >
       <ProviderMarkerUI
         categoryName={provider.categoryName}
