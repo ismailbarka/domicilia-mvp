@@ -88,10 +88,6 @@ export default function App() {
           onPress={setListView}
           providers={filteredProviders}
           category={selectedCategory}
-          onProviderPress={provider => {
-            setSelectedProvider(provider);
-            setListView(false);
-          }}
         />
       )}
     </View>

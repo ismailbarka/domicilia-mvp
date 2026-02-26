@@ -9,13 +9,11 @@ import CloseButton from './provider-card-bottomsheet-components/close-button';
 export default function ListCardBottomsheet({
   onPress,
   providers,
-  category,
-  onProviderPress
+  category
 }: {
   onPress: (listView: boolean) => void;
   providers: Provider[];
   category: string;
-  onProviderPress: (provider: Provider) => void;
 }) {
   const modalRef = useRef<Modalize>(null);
   const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -40,26 +38,14 @@ export default function ListCardBottomsheet({
       onClosed={handleClose}
       HeaderComponent={
         <View style={styles.header}>
-          <Text style={styles.title}>
-            {category === 'All' ? 'All Providers' : `${category}s`}
-          </Text>
+          <Text style={styles.title}>{category}</Text>
           <CloseButton onPress={() => modalRef.current?.close()} />
         </View>
       }
       flatListProps={{
         data: providers,
         keyExtractor: item => item.id.toString(),
-        renderItem: ({ item }) => (
-          <ProviderItem
-            provider={item}
-            onPress={() => {
-              modalRef.current?.close();
-              setTimeout(() => {
-                onProviderPress(item);
-              }, 100);
-            }}
-          />
-        ),
+        renderItem: ({ item }) => <ProviderItem provider={item} />,
         contentContainerStyle: styles.listContent,
         showsVerticalScrollIndicator: false,
         bounces: false,

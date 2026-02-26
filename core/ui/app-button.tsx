@@ -25,7 +25,6 @@ export default function AppButton({ title, icon, onPress, style }: Props) {
   return (
     <TouchableOpacity style={[styles.button, style]} onPress={handlePress}>
       {icon}
-
       {title ? <Text style={styles.text}>{title}</Text> : null}
     </TouchableOpacity>
   );

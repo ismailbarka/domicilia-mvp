@@ -1,120 +1,21 @@
 import { Provider } from '@/core/types/provider-type';
 import { getCategoryColor } from '@/core/utils/categoryColors';
-import { Ionicons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
 import React from 'react';
-import {
-  Alert,
-  Image,
-  Linking,
-  Pressable,
-  Share,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+import CallButton from './home-screen/list-bottomsheet-components/call-button';
+import DirectionsButton from './home-screen/list-bottomsheet-components/directions-button';
+import ProviderBsicInfos from './home-screen/list-bottomsheet-components/provider-basic-infos';
+import ShareButton from './home-screen/list-bottomsheet-components/share-button';
+import WhatsAppButton from './home-screen/list-bottomsheet-components/whatsapp-button';
 
 type Props = {
   provider: Provider;
-  onPress: () => void;
 };
 
-export default function ProviderItem({ provider, onPress }: Props) {
+export default function ProviderItem({ provider }: Props) {
   const categoryColor = getCategoryColor(provider.categoryName);
-
-  const handleCardPress = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onPress();
-  };
-
-  const handleCall = async () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    const url = `tel:${provider.phone}`;
-    try {
-      await Linking.openURL(url);
-    } catch (e) {
-      console.warn('Could not open dialer:', e);
-    }
-  };
-
-  const handleWhatsApp = async () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    const cleanPhone = provider.phone.replace(/\s+/g, '').replace('+', '');
-    const url = `https://wa.me/${cleanPhone}`;
-    try {
-      await Linking.openURL(url);
-    } catch (e) {
-      console.warn('Could not open WhatsApp:', e);
-    }
-  };
-
-  const handleDirections = async () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-
-    const lat = provider.latitude;
-    const lng = provider.longitude;
-
-    const openAppleMaps = () => {
-      const url = `maps://app?daddr=${lat},${lng}&t=m`;
-      Linking.openURL(url);
-    };
-
-    const openGoogleMaps = async () => {
-      const url = `comgooglemaps://?daddr=${lat},${lng}&directionsmode=driving`;
-      const canOpen = await Linking.canOpenURL(url);
-
-      if (canOpen) {
-        Linking.openURL(url);
-      } else {
-        Linking.openURL(
-          `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`
-        );
-      }
-    };
-
-    Alert.alert(
-      'Get Directions',
-      'Choose your preferred map application:',
-      [
-        {
-          text: 'Apple Maps',
-          onPress: openAppleMaps
-        },
-        {
-          text: 'Google Maps',
-          onPress: openGoogleMaps
-        },
-        {
-          text: 'Cancel',
-          style: 'cancel'
-        }
-      ],
-      { cancelable: true }
-    );
-  };
-
-  const handleShare = async () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    try {
-      const message = `Check out ${provider.name} for ${provider.categoryName} services!\n\nPhone: ${provider.phone}\n\nShared from Local Service Providers App`;
-      await Share.share({
-        message,
-        title: `Share ${provider.name}`
-      });
-    } catch (e) {
-      console.warn('Error sharing:', e);
-    }
-  };
-
-  const formatDistance = (dist: number) => {
-    if (dist < 1000) {
-      return `${Math.round(dist)}m`;
-    }
-    return `${(dist / 1000).toFixed(1)}km`;
-  };
-
   return (
-    <Pressable style={styles.container} onPress={handleCardPress}>
+    <View style={styles.container}>
       <View style={styles.topSection}>
         <View style={[styles.photoContainer, { borderColor: categoryColor }]}>
           {provider.photoUrl ? (
@@ -123,68 +24,16 @@ export default function ProviderItem({ provider, onPress }: Props) {
             <View style={[styles.photo, styles.photoPlaceholder]} />
           )}
         </View>
-
-        <Pressable
-          style={styles.cardShareBtn}
-          onPress={handleShare}
-          hitSlop={10}
-        >
-          <Ionicons name="share-social-outline" size={18} color="#666" />
-        </Pressable>
-
-        <View style={styles.info}>
-          <Text style={styles.name} numberOfLines={1}>
-            {provider.name}
-          </Text>
-
-          <View style={styles.metaRow}>
-            <View
-              style={[styles.badge, { backgroundColor: categoryColor + '15' }]}
-            >
-              <View
-                style={[styles.badgeDot, { backgroundColor: categoryColor }]}
-              />
-              <Text style={[styles.badgeText, { color: categoryColor }]}>
-                {provider.categoryName}
-              </Text>
-            </View>
-
-            <View style={styles.distanceRow}>
-              <Ionicons name="navigate-outline" size={12} color="#666" />
-              <Text style={styles.distanceText}>
-                {formatDistance(provider.distance)} away
-              </Text>
-            </View>
-          </View>
-        </View>
+        <ProviderBsicInfos provider={provider} />
+        <ShareButton provider={provider} />
       </View>
 
       <View style={styles.actionRow}>
-        <Pressable
-          style={[styles.actionBtn, { backgroundColor: categoryColor }]}
-          onPress={handleCall}
-        >
-          <Ionicons name="call" size={16} color="#fff" />
-          <Text style={styles.actionBtnText}>Call</Text>
-        </Pressable>
-
-        <Pressable
-          style={[styles.actionBtn, styles.whatsappBtn]}
-          onPress={handleWhatsApp}
-        >
-          <Ionicons name="logo-whatsapp" size={16} color="#fff" />
-          <Text style={styles.actionBtnText}>WhatsApp</Text>
-        </Pressable>
-
-        <Pressable
-          style={[styles.actionBtn, styles.directionsBtn]}
-          onPress={handleDirections}
-        >
-          <Ionicons name="navigate" size={16} color="#fff" />
-          <Text style={styles.actionBtnText}>Directions</Text>
-        </Pressable>
+        <CallButton provider={provider} />
+        <WhatsAppButton provider={provider} />
+        <DirectionsButton provider={provider} />
       </View>
-    </Pressable>
+    </View>
   );
 }
 
