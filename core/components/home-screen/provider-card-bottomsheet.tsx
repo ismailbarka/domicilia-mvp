@@ -3,13 +3,13 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import CallButton from './provider-card-bottomsheet-components/call-button';
-import CloseButton from './provider-card-bottomsheet-components/close-button';
-import DirectionsButton from './provider-card-bottomsheet-components/directions-button';
+import CallButton from '../shared/call-button';
+import CloseButton from '../shared/close-button';
+import DirectionsButton from '../shared/directions-button';
+import ShareButton from '../shared/share-button';
+import WhatsAppButton from '../shared/whatsapp-button';
 import InfoRow from './provider-card-bottomsheet-components/info-row';
 import ProfilePhoto from './provider-card-bottomsheet-components/profile-photo';
-import ShareButton from './provider-card-bottomsheet-components/share-button';
-import WhatsAppButton from './provider-card-bottomsheet-components/whatsapp-button';
 
 export default function ProviderCardBottomsheet({
   setSelectedProvider,
@@ -41,9 +41,11 @@ export default function ProviderCardBottomsheet({
       closeOnOverlayTap
     >
       <View style={styles.sheet}>
-        <CloseButton onPress={() => modalRef.current?.close()} />
-        <ShareButton provider={provider} />
-        <ProfilePhoto provider={provider} />
+        <View style={styles.header}>
+          <ShareButton provider={provider} />
+          <CloseButton onPress={() => modalRef.current?.close()} />
+        </View>
+        <ProfilePhoto provider={provider} size={90} />
         <Text style={styles.name}>{provider.name}</Text>
         <InfoRow provider={provider} />
         {provider.description && (
@@ -69,7 +71,13 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24,
     overflow: 'hidden'
   },
-
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 16
+  },
   sheet: {
     width: '100%',
     backgroundColor: '#fff',

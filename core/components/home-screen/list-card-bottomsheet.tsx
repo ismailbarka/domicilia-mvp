@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import CloseButton from './provider-card-bottomsheet-components/close-button';
+import CloseButton from '../shared/close-button';
 
 export default function ListCardBottomsheet({
   onPress,
@@ -74,7 +74,10 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#EEE',
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   title: {
     fontSize: 22,

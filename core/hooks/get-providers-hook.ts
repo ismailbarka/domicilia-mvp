@@ -26,8 +26,6 @@ export default function useGetProviders(
         setLoading(false);
       }
     };
-    console.log('latitude', latitude);
-    console.log('longitude', longitude);
     getNewProviders();
   }, [distance, latitude, longitude]);
   return { providers, loading };

@@ -14,9 +14,6 @@ export default function CloseButton({ onPress }: { onPress: () => void }) {
 
 const styles = StyleSheet.create({
   closeBtn: {
-    position: 'absolute',
-    top: 16,
-    right: 20,
     width: 32,
     height: 32,
     borderRadius: 16,

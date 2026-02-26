@@ -40,15 +40,18 @@ export default function DirectionsButton({ provider }: { provider: Provider }) {
 
   return (
     <AppButton
-      style={[styles.actionBtn, styles.directionsBtn]}
+      style={[styles.actionBtn, styles.whatsappBtn]}
       onPress={handleDirections}
-      title="Get Directions"
-      icon={<Ionicons name="navigate-outline" size={18} color="#fff" />}
+      title="Directions"
+      icon={<Ionicons name="navigate" size={16} color="#fff" />}
     />
   );
 }
 
 const styles = StyleSheet.create({
+  whatsappBtn: {
+    backgroundColor: '#1A1A1A'
+  },
   actionBtn: {
     flex: 1,
     flexDirection: 'row',
@@ -56,12 +59,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 12,
     borderRadius: 14,
-    gap: 8
-  },
-  directionsBtn: {
-    backgroundColor: '#1A1A1A',
-    width: '100%',
-    flex: 0,
-    marginBottom: 16
+    gap: 8,
+    width: '100%'
   }
 });
