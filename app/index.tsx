@@ -51,7 +51,7 @@ export default function App() {
           style={styles.map}
           region={region}
           showsUserLocation
-          provider="google"
+          // provider="google"
         >
           {providers?.map(provider => {
             return (
