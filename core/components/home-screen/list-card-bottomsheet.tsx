@@ -1,4 +1,4 @@
-import ProviderItem from '@/core/components/ProviderItem';
+import ProviderItem from '@/core/components/provider-item';
 import { Provider } from '@/core/types/provider-type';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useRef } from 'react';
@@ -26,6 +26,9 @@ export default function ListCardBottomsheet({
     onPress(false);
   }, [onPress]);
 
+  const handleCloseModal = useCallback(() => {
+    modalRef.current?.close();
+  }, []);
   return (
     <Modalize
       ref={modalRef}
@@ -39,7 +42,7 @@ export default function ListCardBottomsheet({
       HeaderComponent={
         <View style={styles.header}>
           <Text style={styles.title}>{category}</Text>
-          <CloseButton onPress={() => modalRef.current?.close()} />
+          <CloseButton onPress={handleCloseModal} />
         </View>
       }
       flatListProps={{

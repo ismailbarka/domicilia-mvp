@@ -6,9 +6,10 @@ import {
 } from '@expo-google-fonts/jost';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import 'react-native-gesture-handler';
 
+import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 
@@ -21,20 +22,19 @@ export default function RootLayout() {
     'Jost-Bold': Jost_700Bold
   });
 
-  const loadApp = useCallback(async () => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded, error]);
-
   useEffect(() => {
+    const loadApp = async () => {
+      if (loaded || error) {
+        SplashScreen.hideAsync();
+      }
+    };
     loadApp();
-  }, [loadApp]);
+  }, [error, loaded]);
 
   if (!loaded && !error) return null;
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.container}>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen
@@ -45,3 +45,9 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+});

@@ -7,9 +7,9 @@ export const CATEGORY_COLORS: Record<string, string> = {
 
 export const DEFAULT_CATEGORY_COLOR = '#9E9E9E';
 
-export function getCategoryColor(categoryName?: string | null): string {
+export const getCategoryColor = (categoryName?: string | null): string => {
   if (!categoryName) {
     return DEFAULT_CATEGORY_COLOR;
   }
   return CATEGORY_COLORS[categoryName.toLowerCase()] || DEFAULT_CATEGORY_COLOR;
-}
+};

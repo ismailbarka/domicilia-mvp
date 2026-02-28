@@ -1,13 +1,10 @@
 import { Provider } from '@/core/types/provider-type';
-import { getCategoryColor } from '@/core/utils/categoryColors';
+import { getCategoryColor } from '@/core/utils/category-colors';
+import { formatDistance } from '@/core/utils/format-distance';
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function InfoRow({ provider }: { provider: Provider }) {
-  const formatDistance = (dist: number) => {
-    if (dist < 1000) return `${Math.round(dist)}m away`;
-    return `${(dist / 1000).toFixed(1)}km away`;
-  };
   const categoryColor = getCategoryColor(provider.categoryName);
 
   return (

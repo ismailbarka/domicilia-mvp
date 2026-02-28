@@ -30,6 +30,10 @@ export default function ProviderCardBottomsheet({
     }, 500);
   }, [setSelectedProvider]);
 
+  const handleCloseModal = useCallback(() => {
+    modalRef.current?.close();
+  }, []);
+
   return (
     <Modalize
       ref={modalRef}
@@ -43,7 +47,7 @@ export default function ProviderCardBottomsheet({
       <View style={styles.sheet}>
         <View style={styles.header}>
           <ShareButton provider={provider} />
-          <CloseButton onPress={() => modalRef.current?.close()} />
+          <CloseButton onPress={handleCloseModal} />
         </View>
         <ProfilePhoto provider={provider} size={90} />
         <Text style={styles.name}>{provider.name}</Text>

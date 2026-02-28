@@ -2,7 +2,7 @@ import {
   CATEGORY_COLORS,
   DEFAULT_CATEGORY_COLOR,
   getCategoryColor
-} from '../categoryColors';
+} from '../category-colors';
 
 describe('getCategoryColor Utility', () => {
   it('should return the correct color for a valid exact category', () => {

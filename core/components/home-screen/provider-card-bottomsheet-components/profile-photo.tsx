@@ -1,8 +1,9 @@
 import { Provider } from '@/core/types/provider-type';
-import { getCategoryColor } from '@/core/utils/categoryColors';
+import { getCategoryColor } from '@/core/utils/category-colors';
+import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
-export default function ProfilePhoto({
+function ProfilePhoto({
   provider,
   size
 }: {
@@ -49,6 +50,7 @@ export default function ProfilePhoto({
     </View>
   );
 }
+export default React.memo(ProfilePhoto);
 
 const styles = StyleSheet.create({
   photoContainer: {

@@ -1,7 +1,7 @@
 import { Provider } from '@/core/types/provider-type';
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import ProviderBsicInfos from './home-screen/list-bottomsheet-components/provider-basic-infos';
+import ProviderBasicInfos from './home-screen/list-bottomsheet-components/provider-basic-infos';
 import ProfilePhoto from './home-screen/provider-card-bottomsheet-components/profile-photo';
 import CallButton from './shared/call-button';
 import DirectionsButton from './shared/directions-button';
@@ -12,12 +12,12 @@ type Props = {
   provider: Provider;
 };
 
-export default function ProviderItem({ provider }: Props) {
+function ProviderItem({ provider }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.topSection}>
         <ProfilePhoto provider={provider} size={60} />
-        <ProviderBsicInfos provider={provider} />
+        <ProviderBasicInfos provider={provider} />
         <ShareButton provider={provider} />
       </View>
 
@@ -29,6 +29,10 @@ export default function ProviderItem({ provider }: Props) {
     </View>
   );
 }
+
+export default memo(ProviderItem, (prev, next) => {
+  return prev.provider.id === next.provider.id;
+});
 
 const styles = StyleSheet.create({
   container: {

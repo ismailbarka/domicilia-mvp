@@ -1,8 +1,9 @@
 import * as Haptics from 'expo-haptics';
-import { useCallback } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { memo, useCallback } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
+import FilterButton from './filter-button';
 
-export default function FiltersScrollView({
+const FiltersScrollView = memo(function FiltersScrollView({
   filterCategories,
   selectedCategory,
   setSelectedCategory
@@ -27,27 +28,18 @@ export default function FiltersScrollView({
       style={styles.filterScroll}
     >
       {filterCategories.map(category => (
-        <TouchableOpacity
+        <FilterButton
           key={category}
-          style={[
-            styles.filterButton,
-            selectedCategory === category && styles.filterButtonSelected
-          ]}
-          onPress={() => handleClick(category)}
-        >
-          <Text
-            style={[
-              styles.filterText,
-              selectedCategory === category && styles.filterTextSelected
-            ]}
-          >
-            {category}
-          </Text>
-        </TouchableOpacity>
+          category={category}
+          isSelected={selectedCategory === category}
+          onPress={handleClick}
+        />
       ))}
     </ScrollView>
   );
-}
+});
+
+export default FiltersScrollView;
 
 const styles = StyleSheet.create({
   filterScroll: {

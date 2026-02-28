@@ -84,7 +84,6 @@ export default function useCurrentLocation() {
       }
     } else {
       // if the app doesn't have permission, ask to open settings
-      // ana li kateb had lcomments machi AI aba anas
       await askToOpenSettings();
       location = CASABLANCA_LOCATION_OBJECT;
     }

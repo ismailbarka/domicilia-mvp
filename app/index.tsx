@@ -10,14 +10,14 @@ import useFilteredProviders from '@/core/hooks/use-filtered-providers';
 import { Provider } from '@/core/types/provider-type';
 import AppButton from '@/core/ui/app-button';
 import { Ionicons } from '@expo/vector-icons';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import MapView from 'react-native-maps';
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [listView, setListView] = useState(false);
+  const [isListOpen, setIsListOpen] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
     null
   );
@@ -42,6 +42,10 @@ export default function App() {
   const filterCategories = useMemo(() => {
     return ['All', ...categories.map(c => c.name)];
   }, [categories]);
+
+  const handleOpenList = useCallback(() => {
+    setIsListOpen(true);
+  }, []);
 
   return (
     <View className="flex-1">
@@ -80,12 +84,12 @@ export default function App() {
       <LocateMe region={region} mapRef={mapRef} />
       <AppButton
         style={styles.button}
-        onPress={() => setListView(true)}
+        onPress={handleOpenList}
         icon={<Ionicons name="list" size={24} color="#007AFF" />}
       />
-      {listView && (
+      {isListOpen && (
         <ListCardBottomsheet
-          onPress={setListView}
+          onPress={setIsListOpen}
           providers={filteredProviders}
           category={selectedCategory}
         />

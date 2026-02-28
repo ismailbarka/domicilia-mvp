@@ -1,4 +1,4 @@
-import { getCategoryColor } from '@/core/utils/categoryColors';
+import { getCategoryColor } from '@/core/utils/category-colors';
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
@@ -7,7 +7,10 @@ type Props = {
   photoUrl?: string | null;
 };
 
-export default function ProviderMarkerUI({ categoryName, photoUrl }: Props) {
+const ProviderMarkerUI = React.memo(function ProviderMarkerUI({
+  categoryName,
+  photoUrl
+}: Props) {
   const borderColor = getCategoryColor(categoryName);
 
   return (
@@ -22,7 +25,9 @@ export default function ProviderMarkerUI({ categoryName, photoUrl }: Props) {
       <View style={[styles.arrow, { borderTopColor: borderColor }]} />
     </View>
   );
-}
+});
+
+export default React.memo(ProviderMarkerUI);
 
 const MARKER_SIZE = 46;
 const BORDER_WIDTH = 3;

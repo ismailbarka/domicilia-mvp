@@ -1,9 +1,9 @@
 import { Provider } from '@/core/types/provider-type';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Marker } from 'react-native-maps';
-import ProviderMarkerUI from './ProviderMarker';
+import ProviderMarkerUI from './provider-marker';
 
-export default function ProvidersMarker({
+function ProvidersMarker({
   provider,
   setSelectedProvider,
   isVisible = true
@@ -49,3 +49,9 @@ export default function ProvidersMarker({
     </Marker>
   );
 }
+
+export default memo(ProvidersMarker, (prev, next) => {
+  return (
+    prev.provider.id === next.provider.id && prev.isVisible === next.isVisible
+  );
+});
