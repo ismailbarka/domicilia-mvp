@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:159468754144:android:e461d651fb5af467dfac85",
+        "mobilesdk_app_id": "1:159468754144:android:351b30f955b66b9edfac85",
         "android_client_info": {
-          "package_name": "com.auraprestige.domiciliamvp"
+          "package_name": "com.ismailbarka.cleaningmapappmobile"
         }
       },
       "oauth_client": [],

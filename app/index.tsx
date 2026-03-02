@@ -56,7 +56,19 @@ export default function App() {
           ref={mapRef}
           style={styles.map}
           region={region}
-          showsUserLocation
+          showsUserLocation={false}
+          // Disable default UI
+          showsCompass={false}
+          showsScale={false}
+          showsTraffic={false}
+          showsBuildings={false}
+          showsIndoors={false}
+          // Google specific
+          toolbarEnabled={false}
+          zoomControlEnabled={false}
+          rotateEnabled={false}
+          // iOS specific
+          pitchEnabled={false}
           // provider="google"
         >
           {providers?.map(provider => {
