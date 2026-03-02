@@ -1,3 +1,4 @@
+import { trackEvent } from '@/core/services/analytics';
 import * as Haptics from 'expo-haptics';
 import React from 'react';
 import {
@@ -18,6 +19,7 @@ type Props = PressableProps & {
 
 export default function AppButton({ title, icon, onPress, style }: Props) {
   function handlePress() {
+    trackEvent('my_button_click', { screen: 'home' });
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
     onPress?.();
   }

@@ -7,6 +7,7 @@ import useGetCategories from '@/core/hooks/get-categories-hook';
 import useGetProviders from '@/core/hooks/get-providers-hook';
 import useCurrentLocation from '@/core/hooks/use-current-location';
 import useFilteredProviders from '@/core/hooks/use-filtered-providers';
+import { trackEvent } from '@/core/services/analytics';
 import { Provider } from '@/core/types/provider-type';
 import AppButton from '@/core/ui/app-button';
 import { Ionicons } from '@expo/vector-icons';
@@ -44,6 +45,7 @@ export default function App() {
   }, [categories]);
 
   const handleOpenList = useCallback(() => {
+    trackEvent('open_list_button_click');
     setIsListOpen(true);
   }, []);
 

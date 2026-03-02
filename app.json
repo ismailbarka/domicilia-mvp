@@ -10,9 +10,11 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
+      "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
-        "LSApplicationQueriesSchemes": ["tel", "whatsapp"]
-      }
+        "LSApplicationQueriesSchemes": ["tel", "whatsapp", "tel", "whatsapp"]
+      },
+      "bundleIdentifier": "com.ismailbarka.cleaning-map-app-mobile"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,13 +23,15 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
+      "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyAGPHI7rYkOIcPGjo3z8n8DuELlWz0ta9s"
         }
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.ismailbarka.cleaningmapappmobile"
     },
     "web": {
       "output": "static",
@@ -46,11 +50,19 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "@react-native-firebase/app"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "04a5ad34-c642-489b-94e2-38ed960cba14"
+      }
+    },
+    "owner": "ismailbarka"
   }
 }

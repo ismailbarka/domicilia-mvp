@@ -1,3 +1,5 @@
+import '@/core/services/firebase';
+
 import {
   Jost_400Regular,
   Jost_500Medium,

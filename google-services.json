@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "159468754144",
+    "firebase_url": "https://test-b0c71.firebaseio.com",
+    "project_id": "test-b0c71",
+    "storage_bucket": "test-b0c71.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159468754144:android:e461d651fb5af467dfac85",
+        "android_client_info": {
+          "package_name": "com.auraprestige.domiciliamvp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzFfJIGhJCfv7RvH2R9L3wb_C1QNs79Jw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
