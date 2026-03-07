@@ -3,8 +3,8 @@ import ListCardBottomsheet from '@/core/components/home-screen/list-card-bottoms
 import LocateMe from '@/core/components/home-screen/locate-me';
 import ProviderCardBottomsheet from '@/core/components/home-screen/provider-card-bottomsheet';
 import ProvidersMarker from '@/core/components/providers-marker';
-import useGetCategories from '@/core/hooks/get-categories-hook';
-import useGetProviders from '@/core/hooks/get-providers-hook';
+import useCategories from '@/core/hooks/queries/use-categories';
+import useProviders from '@/core/hooks/queries/use-providers';
 import useCurrentLocation from '@/core/hooks/use-current-location';
 import useFilteredProviders from '@/core/hooks/use-filtered-providers';
 import { trackEvent } from '@/core/services/analytics';
@@ -12,7 +12,7 @@ import { Provider } from '@/core/types/provider-type';
 import AppButton from '@/core/ui/app-button';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import MapView from 'react-native-maps';
 
@@ -27,19 +27,25 @@ export default function App() {
 
   const { region } = useCurrentLocation();
 
-  const { providers } = useGetProviders(
-    region?.latitude.toString(),
-    region?.longitude.toString(),
-    '5000'
-  );
+  const lat = region?.latitude?.toString();
+  const lng = region?.longitude?.toString();
+
+  const {
+    data: providers = [],
+    isLoading,
+    isError
+  } = useProviders(lat, lng, '5000');
   const filteredProviders = useFilteredProviders(providers, selectedCategory);
   const visibleProviderIds = useMemo(
     () => new Set(filteredProviders.map(p => p.id)),
     [filteredProviders]
   );
 
-  const { categories } = useGetCategories();
-
+  const {
+    data: categories = [],
+    isLoading: categoriesIsLoading,
+    isError: categoriesIsError
+  } = useCategories();
   const filterCategories = useMemo(() => {
     return ['All', ...categories.map(c => c.name)];
   }, [categories]);
@@ -48,6 +54,20 @@ export default function App() {
     trackEvent('open_list_button_click');
     setIsListOpen(true);
   }, []);
+
+  if (isLoading || categoriesIsLoading)
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Text>isLoading</Text>
+      </View>
+    );
+
+  if (isError || categoriesIsError)
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Text>isError</Text>
+      </View>
+    );
 
   return (
     <View className="flex-1">

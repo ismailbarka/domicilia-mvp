@@ -1,4 +1,5 @@
 import '@/core/services/firebase';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import {
   Jost_400Regular,
@@ -16,6 +17,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 
 SplashScreen.preventAutoHideAsync();
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -36,15 +38,17 @@ export default function RootLayout() {
   if (!loaded && !error) return null;
 
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="modal/index"
-          options={{ presentation: 'modal', headerShown: false }}
-        />
-      </Stack>
-    </GestureHandlerRootView>
+    <QueryClientProvider client={queryClient}>
+      <GestureHandlerRootView style={styles.container}>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="modal/index"
+            options={{ presentation: 'modal', headerShown: false }}
+          />
+        </Stack>
+      </GestureHandlerRootView>
+    </QueryClientProvider>
   );
 }
 
