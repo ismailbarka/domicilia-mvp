@@ -1,17 +1,13 @@
 import { getApps, initializeApp } from 'firebase/app';
 
-// Note: For native (iOS/Android), @react-native-firebase initializes
-// automatically using GoogleService-Info.plist and google-services.json.
-// This web SDK config is kept for potential web support or shared context.
-
 const firebaseConfig = {
-  apiKey: 'AIzaSyDkzGdC6KVoBUKOzxg2-v9nJTR9MJzvXoQ',
-  authDomain: 'test-b0c71.firebaseapp.com',
-  projectId: 'test-b0c71',
-  storageBucket: 'test-b0c71.firebasestorage.app',
-  messagingSenderId: '159468754144',
-  appId: '1:159468754144:web:511d65c954c9bd28dfac85',
-  measurementId: 'G-T3BLN5Y139'
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
 export const app =

@@ -1,4 +1,5 @@
 import { Provider } from '@/core/types/provider-type';
+import { messagehandler } from '@/core/utils/message-handler';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -12,10 +13,10 @@ import InfoRow from './provider-card-bottomsheet-components/info-row';
 import ProfilePhoto from './provider-card-bottomsheet-components/profile-photo';
 
 export default function ProviderCardBottomsheet({
-  setSelectedProvider,
+  onSelectedProvider,
   provider
 }: {
-  setSelectedProvider: (provider: Provider | null) => void;
+  onSelectedProvider: (provider: Provider | null) => void;
   provider: Provider;
 }) {
   const modalRef = useRef<Modalize>(null);
@@ -26,9 +27,9 @@ export default function ProviderCardBottomsheet({
 
   const handleClose = useCallback(() => {
     setTimeout(() => {
-      setSelectedProvider(null);
+      onSelectedProvider(null);
     }, 500);
-  }, [setSelectedProvider]);
+  }, [onSelectedProvider]);
 
   const handleCloseModal = useCallback(() => {
     modalRef.current?.close();
@@ -46,7 +47,14 @@ export default function ProviderCardBottomsheet({
     >
       <View style={styles.sheet}>
         <View style={styles.header}>
-          <ShareButton provider={provider} />
+          <ShareButton
+            title={provider.name}
+            message={messagehandler(
+              provider.name,
+              provider.categoryName,
+              provider.phone
+            )}
+          />
           <CloseButton onPress={handleCloseModal} />
         </View>
         <ProfilePhoto provider={provider} size={90} />
@@ -56,10 +64,16 @@ export default function ProviderCardBottomsheet({
           <Text style={styles.description}>{provider.description}</Text>
         )}
         <View style={styles.actionRow}>
-          <CallButton provider={provider} />
-          <WhatsAppButton provider={provider} />
+          <CallButton
+            phone={provider.phone}
+            categoryName={provider.categoryName}
+          />
+          <WhatsAppButton phone={provider.phone} />
         </View>
-        <DirectionsButton provider={provider} />
+        <DirectionsButton
+          latitude={provider.latitude}
+          longitude={provider.longitude}
+        />
         <View style={styles.phoneInfoContainer}>
           <Ionicons name="call-outline" size={18} color="#666" />
           <Text style={styles.phoneText}>{provider.phone}</Text>

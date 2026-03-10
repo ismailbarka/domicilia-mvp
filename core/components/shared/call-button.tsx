@@ -1,17 +1,22 @@
-import { Provider } from '@/core/types/provider-type';
 import AppButton from '@/core/ui/app-button';
 import { getCategoryColor } from '@/core/utils/category-colors';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback } from 'react';
 import { Linking, StyleSheet } from 'react-native';
 
-function CallButton({ provider }: { provider: Provider }) {
-  const categoryColor = getCategoryColor(provider.categoryName);
+function CallButton({
+  phone,
+  categoryName
+}: {
+  phone: string;
+  categoryName: string;
+}) {
+  const categoryColor = getCategoryColor(categoryName);
 
   const handleCall = useCallback(() => {
-    if (!provider.phone) return;
-    Linking.openURL(`tel:${provider.phone}`);
-  }, [provider.phone]);
+    if (!phone) return;
+    Linking.openURL(`tel:${phone}`);
+  }, [phone]);
 
   return (
     <AppButton

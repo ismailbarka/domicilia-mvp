@@ -11,6 +11,7 @@ import { trackEvent } from '@/core/services/analytics';
 import { Provider } from '@/core/types/provider-type';
 import AppButton from '@/core/ui/app-button';
 import { Ionicons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -33,7 +34,8 @@ export default function App() {
   const {
     data: providers = [],
     isLoading,
-    isError
+    isError,
+    error
   } = useProviders(lat, lng, '5000');
   const filteredProviders = useFilteredProviders(providers, selectedCategory);
   const visibleProviderIds = useMemo(
@@ -44,7 +46,8 @@ export default function App() {
   const {
     data: categories = [],
     isLoading: categoriesIsLoading,
-    isError: categoriesIsError
+    isError: categoriesIsError,
+    error: categoriesError
   } = useCategories();
   const filterCategories = useMemo(() => {
     return ['All', ...categories.map(c => c.name)];
@@ -55,6 +58,15 @@ export default function App() {
     setIsListOpen(true);
   }, []);
 
+  const handleLocateMe = useCallback(() => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+    mapRef.current?.animateToRegion(region, 500);
+  }, [mapRef, region]);
+
+  const handleCloseList = useCallback(() => {
+    setIsListOpen(false);
+  }, []);
+
   if (isLoading || categoriesIsLoading)
     return (
       <View className="flex-1 items-center justify-center">
@@ -62,12 +74,15 @@ export default function App() {
       </View>
     );
 
-  if (isError || categoriesIsError)
+  if (isError || categoriesIsError) {
+    console.log('error : ', error);
+    console.log('data : ', categoriesError);
     return (
       <View className="flex-1 items-center justify-center">
         <Text>isError</Text>
       </View>
     );
+  }
 
   return (
     <View className="flex-1">
@@ -77,19 +92,15 @@ export default function App() {
           style={styles.map}
           region={region}
           showsUserLocation={false}
-          // Disable default UI
           showsCompass={false}
           showsScale={false}
           showsTraffic={false}
           showsBuildings={false}
           showsIndoors={false}
-          // Google specific
           toolbarEnabled={false}
           zoomControlEnabled={false}
           rotateEnabled={false}
-          // iOS specific
           pitchEnabled={false}
-          // provider="google"
         >
           {providers?.map(provider => {
             return (
@@ -105,17 +116,17 @@ export default function App() {
 
         <FiltersScrollView
           filterCategories={filterCategories}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
+          category={selectedCategory}
+          onSelectedCategoryChange={setSelectedCategory}
         />
       </View>
       {selectedProvider && (
         <ProviderCardBottomsheet
           provider={selectedProvider}
-          setSelectedProvider={setSelectedProvider}
+          onSelectedProvider={setSelectedProvider}
         />
       )}
-      <LocateMe region={region} mapRef={mapRef} />
+      <LocateMe onPress={handleLocateMe} />
       <AppButton
         style={styles.button}
         onPress={handleOpenList}
@@ -123,7 +134,7 @@ export default function App() {
       />
       {isListOpen && (
         <ListCardBottomsheet
-          onPress={setIsListOpen}
+          onClose={handleCloseList}
           providers={filteredProviders}
           category={selectedCategory}
         />
@@ -139,10 +150,10 @@ const styles = StyleSheet.create({
   button: {
     position: 'absolute',
     bottom: 40,
-    left: 20, // bottom-left corner
-    width: 50, // same width as LocateMe
-    height: 50, // same height as LocateMe
-    borderRadius: 25, // circular like LocateMe
+    left: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',

@@ -6,15 +6,17 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import CloseButton from '../shared/close-button';
 
-export default function ListCardBottomsheet({
-  onPress,
-  providers,
-  category
-}: {
-  onPress: (listView: boolean) => void;
+interface ListCardBottomsheetProps {
+  onClose: () => void;
   providers: Provider[];
   category: string;
-}) {
+}
+
+export default function ListCardBottomsheet({
+  onClose,
+  providers,
+  category
+}: ListCardBottomsheetProps) {
   const modalRef = useRef<Modalize>(null);
   const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -23,8 +25,8 @@ export default function ListCardBottomsheet({
   }, []);
 
   const handleClose = useCallback(() => {
-    onPress(false);
-  }, [onPress]);
+    onClose();
+  }, [onClose]);
 
   const handleCloseModal = useCallback(() => {
     modalRef.current?.close();

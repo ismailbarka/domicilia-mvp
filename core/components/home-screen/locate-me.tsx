@@ -1,23 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
-import { useCallback } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import MapView, { Region } from 'react-native-maps';
 
-export default function LocateMe({
-  region,
-  mapRef
-}: {
-  region: Region;
-  mapRef: React.RefObject<MapView | null>;
-}) {
-  const handleLocateMe = useCallback(() => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-    mapRef.current?.animateToRegion(region, 500);
-  }, [mapRef, region]);
-
+export default function LocateMe({ onPress }: { onPress: () => void }) {
   return (
-    <TouchableOpacity style={styles.button} onPress={handleLocateMe}>
+    <TouchableOpacity style={styles.button} onPress={onPress}>
       <Ionicons name="locate" size={24} color="#007AFF" />
     </TouchableOpacity>
   );

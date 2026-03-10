@@ -3,21 +3,23 @@ import { memo, useCallback } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import FilterButton from './filter-button';
 
+interface FiltersScrollViewProps {
+  filterCategories: string[];
+  category: string | null;
+  onSelectedCategoryChange: (category: string) => void;
+}
+
 const FiltersScrollView = memo(function FiltersScrollView({
   filterCategories,
-  selectedCategory,
-  setSelectedCategory
-}: {
-  filterCategories: string[];
-  selectedCategory: string | null;
-  setSelectedCategory: (category: string) => void;
-}) {
+  category,
+  onSelectedCategoryChange
+}: FiltersScrollViewProps) {
   const handleClick = useCallback(
     (category: string) => {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-      setSelectedCategory(category);
+      onSelectedCategoryChange(category);
     },
-    [setSelectedCategory]
+    [onSelectedCategoryChange]
   );
 
   return (
@@ -27,11 +29,11 @@ const FiltersScrollView = memo(function FiltersScrollView({
       contentContainerStyle={styles.filterScrollContent}
       style={styles.filterScroll}
     >
-      {filterCategories.map(category => (
+      {filterCategories.map(cat => (
         <FilterButton
-          key={category}
-          category={category}
-          isSelected={selectedCategory === category}
+          key={cat}
+          category={cat}
+          isSelected={category === cat}
           onPress={handleClick}
         />
       ))}

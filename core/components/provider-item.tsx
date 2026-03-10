@@ -1,6 +1,7 @@
 import { Provider } from '@/core/types/provider-type';
 import React, { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { messagehandler } from '../utils/message-handler';
 import ProviderBasicInfos from './home-screen/list-bottomsheet-components/provider-basic-infos';
 import ProfilePhoto from './home-screen/provider-card-bottomsheet-components/profile-photo';
 import CallButton from './shared/call-button';
@@ -18,13 +19,26 @@ function ProviderItem({ provider }: Props) {
       <View style={styles.topSection}>
         <ProfilePhoto provider={provider} size={60} />
         <ProviderBasicInfos provider={provider} />
-        <ShareButton provider={provider} />
+        <ShareButton
+          title={provider.name}
+          message={messagehandler(
+            provider.name,
+            provider.categoryName,
+            provider.phone
+          )}
+        />
       </View>
 
       <View style={styles.actionRow}>
-        <CallButton provider={provider} />
-        <WhatsAppButton provider={provider} />
-        <DirectionsButton provider={provider} />
+        <CallButton
+          phone={provider.phone}
+          categoryName={provider.categoryName}
+        />
+        <WhatsAppButton phone={provider.phone} />
+        <DirectionsButton
+          latitude={provider.latitude}
+          longitude={provider.longitude}
+        />
       </View>
     </View>
   );

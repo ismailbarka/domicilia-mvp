@@ -14,7 +14,7 @@
       "infoPlist": {
         "LSApplicationQueriesSchemes": ["tel", "whatsapp", "tel", "whatsapp"]
       },
-      "bundleIdentifier": "com.ismailbarka.cleaning-map-app-mobile"
+      "bundleIdentifier": "com.ismailbarka.cleaningmapappmobile"
     },
     "android": {
       "adaptiveIcon": {

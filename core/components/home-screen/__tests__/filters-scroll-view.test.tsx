@@ -9,8 +9,8 @@ describe('FiltersScrollView Component', () => {
     const { getByText } = render(
       <FiltersScrollView
         filterCategories={mockCategories}
-        selectedCategory="All"
-        setSelectedCategory={() => {}}
+        category="All"
+        onSelectedCategoryChange={() => {}}
       />
     );
 
@@ -26,8 +26,8 @@ describe('FiltersScrollView Component', () => {
     const { getByText } = render(
       <FiltersScrollView
         filterCategories={mockCategories}
-        selectedCategory="All"
-        setSelectedCategory={mockSetSelectedCategory}
+        category="All"
+        onSelectedCategoryChange={mockSetSelectedCategory}
       />
     );
 

@@ -1,27 +1,29 @@
-import { Provider } from '@/core/types/provider-type';
 import AppButton from '@/core/ui/app-button';
 import { Ionicons } from '@expo/vector-icons';
 import { useCallback } from 'react';
 import { Alert, Linking, StyleSheet } from 'react-native';
 
-export default function DirectionsButton({ provider }: { provider: Provider }) {
-  const handleDirections = useCallback(async () => {
-    const lat = provider.latitude;
-    const lng = provider.longitude;
-
+export default function DirectionsButton({
+  latitude,
+  longitude
+}: {
+  latitude: number;
+  longitude: number;
+}) {
+  const handleDirections = useCallback(() => {
     const openAppleMaps = () => {
-      Linking.openURL(`maps://app?daddr=${lat},${lng}&t=m`);
+      Linking.openURL(`maps://app?daddr=${latitude},${longitude}&t=m`);
     };
 
     const openGoogleMaps = async () => {
-      const url = `comgooglemaps://?daddr=${lat},${lng}&directionsmode=driving`;
+      const url = `comgooglemaps://?daddr=${latitude},${longitude}&directionsmode=driving`;
       const canOpen = await Linking.canOpenURL(url);
 
       if (canOpen) {
         Linking.openURL(url);
       } else {
         Linking.openURL(
-          `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`
+          `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`
         );
       }
     };
@@ -36,7 +38,7 @@ export default function DirectionsButton({ provider }: { provider: Provider }) {
       ],
       { cancelable: true }
     );
-  }, [provider.latitude, provider.longitude]);
+  }, [latitude, longitude]);
 
   return (
     <AppButton
